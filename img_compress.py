@@ -1,5 +1,5 @@
 """
-Author: Dan Gyinaye Poku (dan.gyinaye@gmail.com)
+Author: Dan G. Poku (dan.gyinaye@gmail.com)
 Date: April 15, 2023
 Description: This script compresses all image files in a 
 folder and its subfolders and saves them in a separate folder. 
