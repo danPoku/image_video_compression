@@ -1,7 +1,7 @@
 """
 Author: Dan G. Poku (dan.gyinaye@gmail.com)
 Date: April 15, 2023
-Description: This script compresses all image files in a 
+Description: This script compresses (at 50%) all image files in a 
 folder and its subfolders and saves them in a separate folder. 
 It avoids recompressing previously compressed files.
 """
@@ -11,7 +11,7 @@ import logging
 from typing import List
 import numpy as np
 import cv2
-from destination_path import DESTINATION_PATH, PY_SCRIPT
+from destination_path import PY_SCRIPT
 
 # Set up logging
 logging.basicConfig(filename='image_compression.log', level=logging.INFO,
@@ -26,19 +26,21 @@ def get_folder_path() -> str:
     return os.path.dirname(os.path.abspath(PY_SCRIPT))
 
 
-def create_destination_folder() -> None:
-    """Creates a new folder at the location specified if it does not already exist"""
-    if not os.path.exists(DESTINATION_PATH):
-        os.makedirs(DESTINATION_PATH)
+def create_destination_folder(folder_path: str) -> str:
+    """Creates a new folder within the given folder path"""
+    destination_folder = os.path.join(folder_path, "compressed_images")
+    if not os.path.exists(destination_folder):
+        os.makedirs(destination_folder)
+    return destination_folder
 
 
-def get_compressed_files() -> List[str]:
+def get_compressed_files(destination_folder: str) -> List[str]:
     """Keep track of previously compressed files to avoid recompression"""
-    return [os.path.splitext(f)[0] for f in os.listdir(DESTINATION_PATH)]
+    return [os.path.splitext(f)[0] for f in os.listdir(destination_folder)]
 
 
-def compress_image(img_path: str, compressed_files: List[str]) -> None:
-    """Compress an image and save in another folder by suffixing the filename with '_compressed'"""
+def compress_image(img_path: str, compressed_files: List[str], destination_folder: str) -> None:
+    """Compress an image and save in another folder within the same folder"""
     # Load the image
     with open(img_path, 'rb') as f:
         img = cv2.imdecode(np.frombuffer(f.read(), np.uint8), cv2.IMREAD_COLOR)
@@ -48,7 +50,7 @@ def compress_image(img_path: str, compressed_files: List[str]) -> None:
 
     # Compress the image and save it in another folder with "_compressed" appended to the filename
     compressed_path = os.path.join(
-        DESTINATION_PATH, f"{img_name}_compressed.jpg")
+        destination_folder, f"{img_name}_compressed.jpg")
     with open(compressed_path, 'wb') as f:
         f.write(cv2.imencode('.jpg', img, compress_params)[1])
 
@@ -61,19 +63,15 @@ def compress_images() -> None:
     # Get and set the current folder path of the Python script
     folder_path = get_folder_path()
 
-    # Create the destination folder if it doesn't exist
-    create_destination_folder()
-
-    # Keep track of previously compressed files
-    compressed_files = get_compressed_files()
-
     # Loop through all image files in the folder and compress them
     for root, dirs, files in os.walk(folder_path):
+        destination_folder = create_destination_folder(root)
+        compressed_files = get_compressed_files(destination_folder)
         for filename in files:
             if filename.lower().endswith((".jpg", "png")) or filename.lower().endswith((".JPG", "PNG")):
                 img_path = os.path.join(root, filename)
                 if os.path.splitext(filename)[0] not in compressed_files:
-                    compress_image(img_path, compressed_files)
+                    compress_image(img_path, compressed_files, destination_folder)
 
 
 if __name__ == "__main__":
