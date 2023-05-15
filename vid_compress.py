@@ -13,9 +13,21 @@ def get_video_info(video_path: str) -> dict:
     """
     Returns a dictionary containing video information using ffprobe.
     """
-    result = subprocess.run(["ffprobe", "-v", "quiet", "-print_format", "json", "-show_format", "-show_streams", video_path], capture_output=True)
-    info = json.loads(result.stdout)
-    return info
+    try:
+        result = subprocess.run(["ffprobe", 
+                                "-v", 
+                                "quiet", 
+                                "-print_format", 
+                                "json", 
+                                "-show_format", 
+                                "-show_streams", 
+                                video_path], capture_output=True, check=True)
+        result.check_returncode() # Raise an exception if the command execution fails
+        info = json.loads(result.stdout)
+        return info
+    except (subprocess.CalledProcessError, json.JSONDecodeError) as error:
+        print(f"Error occurred while retrieving video information: {error}")
+        return {}
 
 def get_bitrate(video_path: str) -> int:
     """
