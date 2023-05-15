@@ -6,7 +6,7 @@ folder and its subfolders and saves them in a separate folder.
 It avoids recompressing previously compressed files.
 
 ## Video Compression Script (vid_compress.py)
-###Description
+### Description
 This script compresses all .mp4 files in a folder and its subfolders, saving them in a separate folder. It avoids recompressing previously compressed files.
 
 ### Requirements
@@ -17,9 +17,11 @@ Place the videocomp.py script in the root folder containing the videos you want 
 Open a terminal or command prompt and navigate to the root folder.
 
 Run the following command:
-'''console
+
+```console
 python videocomp.py
-'''
+```
+
 The script will recursively compress all **'.mp4'** files in the root folder and its subfolders, saving the compressed files in a "compressed" folder within each folder containing the original videos.
 
 Once the script completes, the compressed videos will be available in their respective "compressed" folders.
@@ -43,5 +45,5 @@ Recursively compresses all .mp4 files in a root folder and saves them to a "comp
 
 Note: The script applies different compression settings based on the bitrate of the video file.
 
-Contact
+### Contact
 For any questions or feedback, please contact Dan G. Poku at dan.gyinaye@gmail.com.
