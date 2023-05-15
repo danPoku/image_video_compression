@@ -1,3 +1,10 @@
+"""
+Author: Dan G. Poku (dan.gyinaye@gmail.com)
+Date: May 15, 2023
+Description: This script compresses all .mp4 files in a 
+folder and its subfolders and saves them in a separate folder. 
+It avoids recompressing previously compressed files.
+"""
 import os
 import subprocess
 import json
