@@ -114,4 +114,4 @@ Note: The script applies different compression settings based on the bitrate of 
 
 ## Contact
 
-For any questions or feedback, please contact Dan G. Poku at dan.gyinaye@gmail.com.
+For any questions or feedback, please contact Dan at dan.gyinaye@gmail.com.
