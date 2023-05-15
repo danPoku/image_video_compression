@@ -1,4 +1,4 @@
-### Image and Video Compression Script
+# Image and Video Compression Script
 
 ## img_compress.py
 This script compresses all image files (.jpg and .png only) in a 
