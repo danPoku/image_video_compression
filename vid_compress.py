@@ -1,8 +1,8 @@
 """
 Author: Dan G. Poku (dan.gyinaye@gmail.com)
 Date: May 15, 2023
-Description: This script compresses all .mp4 files in a 
-folder and its subfolders and saves them in a separate folder. 
+Description: This script compresses all .mp4 files in a
+folder and its subfolders and saves them in a separate folder.
 It avoids recompressing previously compressed files.
 """
 import os
@@ -14,13 +14,13 @@ def get_video_info(video_path: str) -> dict:
     Returns a dictionary containing video information using ffprobe.
     """
     try:
-        result = subprocess.run(["ffprobe", 
-                                "-v", 
-                                "quiet", 
-                                "-print_format", 
-                                "json", 
-                                "-show_format", 
-                                "-show_streams", 
+        result = subprocess.run(["ffprobe",
+                                "-v",
+                                "quiet",
+                                "-print_format",
+                                "json",
+                                "-show_format",
+                                "-show_streams",
                                 video_path], capture_output=True, check=True)
         result.check_returncode() # Raise an exception if the command execution fails
         info = json.loads(result.stdout)
@@ -42,7 +42,9 @@ def is_video_compressed(video_path: str) -> bool:
     Checks if a video file has already been compressed.
     """
     filename = os.path.basename(video_path)
-    compressed_path = os.path.join(os.path.dirname(video_path), "compressed", os.path.splitext(filename)[0] + "_compressed.mp4")
+    compressed_path = os.path.join(os.path.dirname(video_path),
+                                   "compressed",
+                                   os.path.splitext(filename)[0] + "_compressed.mp4")
     return os.path.exists(compressed_path)
 
 def compress_video(video_path: str, output_dir: str) -> str:
@@ -59,8 +61,14 @@ def compress_video(video_path: str, output_dir: str) -> str:
 
     filename = os.path.basename(video_path)
     compressed_path = os.path.join(output_dir, os.path.splitext(filename)[0] + "_compressed.mp4")
-
-    subprocess.run(["ffmpeg", "-i", video_path, "-vcodec", "libx264", "-crf", str(crf), compressed_path], capture_output=True)
+    subprocess.run(["ffmpeg",
+                    "-i",
+                    video_path,
+                    "-vcodec",
+                    "libx264",
+                    "-crf",
+                    str(crf),
+                    compressed_path], capture_output=True, check=True)
     return compressed_path
 
 def compress_videos(root_folder: str):
